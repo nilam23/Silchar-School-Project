@@ -7,7 +7,7 @@
                 <ul>
                     <% notifications.forEach(item=> { %>
                         <li>
-                            <i>(On <%=item.date%>):</i>
+                            <i>(On <%=item.date.toDateString()%>):</i>
                             <b>
                                 <%=item.content%>
                             </b>

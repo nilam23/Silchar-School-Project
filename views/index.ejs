@@ -142,7 +142,7 @@
                             <% notifications.forEach(item=> { %>
                                 <%if(count>0){%>
                                     <li>
-                                        <i>(On <%=item.date%>):</i>
+                                        <i>(On <%=item.date.toDateString()%>):</i>
                                         <b>
                                             <%=item.content%>
                                         </b>

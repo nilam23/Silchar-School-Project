@@ -1,6 +1,15 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
+
+const Notification = require("./models/notificationCollection");
+
 const app = express();
 const port = 3000;
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log("Database connection is successful."))
+    .catch((err) => console.log(err));
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -17,48 +26,32 @@ var images = [
     }
 ];
 
-var notifications = [
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-    {
-        content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt utlabore et",
-        date: "10-05-2021"
-    },
-];
-
-
-app.get("/", (req, res) => res.render("index", { notifications }));
-
-// app.get("/history", (req, res) => res.send("History"));
+app.get("/", (req, res) => {
+    const getNotification = async () => {
+        try {
+            notifications = await Notification.find();
+            res.render("index", { notifications });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    getNotification();
+});
 
 app.get("/facultyList", (req, res) => res.render("facultyList"));
 
 app.get("/activities", (req, res) => res.render("activities", { images }));
 
-// app.get("/facilities", (req, res) => res.send("Facilities"));
-
-app.get("/notifications", (req, res) => res.render("Notifications", { notifications }));
+app.get("/notifications", (req, res) => {
+    const getNotification = async () => {
+        try {
+            const notifications = await Notification.find();
+            res.render("Notifications", { notifications });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    getNotification();
+});
 
 app.listen(port, () => console.log(`Sevrer is listening at port ${port}...`));
