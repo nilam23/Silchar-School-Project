@@ -192,3 +192,16 @@
   align-items: center;
   height: 160px;
 }
+
+/* NOTIFICATIONS */
+.notifications{
+  width: 100%;
+  height: auto;
+  padding: 30px;
+  margin: 10px;
+  box-sizing: border-box;
+	line-height: 1.7;
+  border: 1px line lightgrey;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
