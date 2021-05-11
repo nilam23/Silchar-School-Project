@@ -5,7 +5,7 @@
             <ol class="carousel-indicators">
                 <% var i=0; %>
                     <% var state="active" ; %>
-                        <% images.forEach(img=> {%>
+                        <% activities.forEach(activity=> {%>
                             <% if(i!=0){ %>
                                 <% state=" " ; } %>
                                     <li data-target="#myCarousel" data-slide-to="<%=i%>" class="<%=state%>"></li>
@@ -15,14 +15,15 @@
             <div class="carousel-inner">
                 <% var j=0; %>
                     <% var state="item active" ; %>
-                        <% images.forEach(img=> {%>
+                        <% activities.forEach(activity=> {%>
                             <% if(j!=0){ %>
                                 <% state="item" ; } %>
                                     <div class="<%=state%>">
-                                        <img src="<%=img.src%>" alt="<%=img.title%>" style="width:100%; height: 450px;">
+                                        <img src="<%=activity.src%>" alt="<%=activity.title%>"
+                                            style="width:100%; height: 450px;">
                                         <div class="carousel-caption">
                                             <h3>
-                                                <%=img.title%>
+                                                <%=activity.title%>
                                             </h3>
                                         </div>
                                     </div>

@@ -1,0 +1,28 @@
+<%- include("partials/header") %>
+    <div class="notifications">
+        <h1 style="text-align: center;"><small class="text-muted">NOTIFICATION</small></h1>
+        <% if(notifications.length==0){%>
+            <h4 style="text-align: center; margin-top: 20px;"><i><strong>No new notification</strong></i></h4>
+            <%}else{%>
+                <ul>
+                    <% notifications.forEach(item=> { %>
+                        <li>
+                            <i>(On <%=item.date.toDateString()%>):</i>
+                            <b>
+                                <%=item.content%>
+                            </b>
+                            <form id="delete" action="/adminManageNotifications/<%= item._id %>" method="POST">
+                                <button class="btn btn-danger btn-xs">Delete</button>
+                            </form>
+                        </li>
+                        <br>
+                        <% }); %>
+                </ul>
+                <%}%>
+    </div>
+    <br>
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg" href="/adminManageNotifications/new">ADD NEW NOTIFICATION</a>
+    </div>
+    <br>
+    <%- include("partials/footer") %>
