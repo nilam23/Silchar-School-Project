@@ -60,10 +60,11 @@ const createAdmin = () => {
 var upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
+    var currentUser = req.user;
     const getNotification = async () => {
         try {
             notifications = await Notification.find();
-            res.render("index", { notifications });
+            res.render("index", { notifications, currentUser });
         } catch (err) {
             console.log(err);
         }
