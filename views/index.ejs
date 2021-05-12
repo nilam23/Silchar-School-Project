@@ -23,6 +23,42 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/adminSignUp">Admin</a>
                 </li>
+                <li class="nav-item">
+                    <div class="facContainer">
+                        <button id="facButton" class="nav-link btn btn-success" data-toggle="modal"
+                            data-target="#myModal"><b>Facilities</b></button>
+                        </button>
+                        <div class="modal" id="myModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h3 class="modal-title">Our facilities</h3>
+                                        <button type="button" class="close" data-dismiss="modal">×</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <ul>
+                                            <li>
+                                                <h4>Three Science Labs</h4>
+                                            </li>
+                                            <li>
+                                                <h4>Playground for outdoor activities</h4>
+                                            </li>
+                                            <li>
+                                                <h4>Indoor stadiums</h4>
+                                            </li>
+                                            <li>
+                                                <h4>Swimming Pool</h4>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </nav>
@@ -89,68 +125,29 @@
     <br>
 
     <!-- FACILTIES & NOTIFICATION -->
-    <div class="messages">
-        <div class="message">
-            <div class="facContainer">
-                <button id="facButton" type="button" class="btn btn-info .btn-lg" data-toggle="modal"
-                    data-target="#myModal">
-                    <h1 style="padding-bottom: 7px; text-align: center;"><small class="text-muted">FACILITIES</small>
-                    </h1>
-                </button>
-                <div class="modal" id="myModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Our facilities</h3>
-                                <button type="button" class="close" data-dismiss="modal">×</button>
-                            </div>
-                            <div class="modal-body">
-                                <ul>
-                                    <li>
-                                        <h4>Three Science Labs</h4>
-                                    </li>
-                                    <li>
-                                        <h4>Playground for outdoor activities</h4>
-                                    </li>
-                                    <li>
-                                        <h4>Indoor stadiums</h4>
-                                    </li>
-                                    <li>
-                                        <h4>Swimming Pool</h4>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="message">
-            <h1 style="text-align: center;"><small class="text-muted">NOTIFICATION</small></h1>
-            <% if(notifications.length==0){%>
-                <h4 style="text-align: center; margin-top: 20px;"><i><strong>No new notification</strong></i></h4>
-                <%}else{%>
-                    <ul>
-                        <% var count=3; %>
-                            <% notifications.forEach(item=> { %>
-                                <%if(count>0){%>
-                                    <li>
-                                        <i>(On <%=item.date.toDateString()%>):</i>
-                                        <b>
-                                            <%=item.content%>
-                                        </b>
-                                    </li>
-                                    <% }count--;}); %>
-                    </ul>
-                    <div style="text-align: center;">
-                        <a class="btn btn-primary" href="/notifications">SEE MORE NOTIFICATIONS</a>
-                    </div>
-                    <%}%>
-        </div>
+    <div class="history">
+        <h1 style="text-align: center;"><small class="text-muted">NEW NOTIFICATIONS</small></h1>
+        <% if(notifications.length==0){%>
+            <h4 style="text-align: center; margin-top: 20px;"><i><strong>No new notification</strong></i></h4>
+            <%}else{%>
+                <% var i=notifications.length - 1; %>
+                    <% var count=3; %>
+                        <% while(notifications[i] && count){ %>
+                            <% var item=notifications[i]; %>
+                                <i>(On <%=item.date.toDateString()%>):</i>
+                                <b>
+                                    <%=item.content%>
+                                </b>
+                                <br>
+                                <br>
+                                <% i--; %>
+                                    <% count--; %>
+                                        <% } %>
+                                            <div style="text-align: center;">
+                                                <a class="btn btn-primary" href="/notifications">SEE MORE
+                                                    NOTIFICATIONS</a>
+                                            </div>
+                                            <% } %>
     </div>
     <br>
 

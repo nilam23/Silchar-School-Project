@@ -146,6 +146,8 @@
   border: 1px line lightgray;
   border-radius: 15px;
   margin: 0 40px 0 40px;
+  padding-top: 3px;
+  padding-bottom: 35px;
   text-align: center;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -182,15 +184,16 @@
 
 /* FACILITIES BUTTON */
 #facButton{
-  padding-left: 80px;
-  padding-right: 80px;
-  border-radius: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  margin-top: 7px;
+  margin-left: 5px;
 }
 .facContainer{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 160px;
 }
 
 /* NOTIFICATIONS */

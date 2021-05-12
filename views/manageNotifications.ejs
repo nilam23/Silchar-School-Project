@@ -1,4 +1,6 @@
 <%- include("partials/header") %>
+
+    <h1 class="portal"><small class="text-muted"><b>ADMIN PORTAL</b></small></h1>
     <div class="notifications">
         <h1 style="text-align: center;"><small class="text-muted">NOTIFICATION</small></h1>
         <% if(notifications.length==0){%>
@@ -25,4 +27,3 @@
         <a class="btn btn-primary btn-lg" href="/adminManageNotifications/new">ADD NEW NOTIFICATION</a>
     </div>
     <br>
-    <%- include("partials/footer") %>

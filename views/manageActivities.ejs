@@ -1,7 +1,8 @@
 <%- include("partials/header") %>
 
+    <h1 class="portal"><small class="text-muted"><b>ADMIN PORTAL</b></small></h1>
     <div class="signup-form">
-        <form action="/examples/actions/confirmation.php" method="post">
+        <form action="/adminManageActivities" method="POST" enctype="multipart/form-data">
             <h2>Add new activity</h2>
             <hr>
             <div class="form-group">
@@ -16,4 +17,29 @@
                 <button type="submit" class="btn btn-primary btn-block btn-lg">Add Activity</button>
             </div>
         </form>
+    </div>
+    <hr style="border-top: 2px solid lightgray;">
+
+    <h2 style="text-align: center;">ACTIVITIES</h2>
+    <br>
+    <div class="admin-activity-center">
+        <% if(activities.length==0) { %>
+            <h4><i>No activities available currently.</i></h4>
+            <% }else{ %>
+                <div class="item">
+                    <% activities.forEach(activity=> { %>
+                        <img src="data:image/<%=activity.img.contentType%>;base64,
+                <%=activity.img.data.toString('base64')%>" alt="<%=activity.title%>"
+                            style="width: 200px; height: 100px;">
+                        <h4>
+                            <%= activity.caption %>
+                        </h4>
+                        <form action="/adminManageActivities/<%= activity._id %>" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                        <hr style="border-top: 2px solid lightgray;">
+                        <br>
+                        <% }); %>
+                </div>
+                <% } %>
     </div>
