@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const adminSchema = mongoose.Schema({
     username: {
@@ -11,5 +12,7 @@ const adminSchema = mongoose.Schema({
         reqruired: true
     }
 });
+
+adminSchema.plugin(passportLocalMongoose);
 
 module.exports = mongoose.model("Admin", adminSchema);

@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const passportLocalMongoose = require("passport-local-mongoose");
 
 const Notification = require("./models/notificationCollection");
 const Admin = require("./models/adminCollection");
@@ -20,7 +23,18 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+
+app.use(require("express-session")({
+    secret: process.env.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(Admin.authenticate()));
+passport.serializeUser(Admin.serializeUser());
+passport.deserializeUser(Admin.deserializeUser());
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -30,6 +44,18 @@ var storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now())
     }
 });
+
+const createAdmin = () => {
+    Admin.register(new Admin({ username: process.env.ADMIN_USERNAME }), process.env.ADMIN_PASSWORD, (err, admin) => {
+        if (err) {
+            console.log(err);
+        } else {
+            passport.authenticate("local");
+        }
+    });
+};
+
+// createAdmin();
 
 var upload = multer({ storage: storage });
 
@@ -73,12 +99,17 @@ app.get("/notifications", (req, res) => {
 });
 
 //ADMIN ROUTES
-app.get("/adminSignUp", (req, res) => res.render("adminSignUp"));
+app.get("/adminSignIn", (req, res) => res.render("adminSignIn"));
 
-app.get("/adminManage", (req, res) => res.render("manage"));
+app.post("/adminSignIn", passport.authenticate("local", {
+    successRedirect: "/adminManage",
+    failureRedirect: "/adminSignIn"
+}), (req, res) => { });
+
+app.get("/adminManage", isLoggedIn, (req, res) => res.render("manage"));
 
 // Notification Management route for Admin
-app.get("/adminManageNotifications", (req, res) => {
+app.get("/adminManageNotifications", isLoggedIn, (req, res) => {
     const getNotification = async () => {
         try {
             const notifications = await Notification.find();
@@ -91,10 +122,10 @@ app.get("/adminManageNotifications", (req, res) => {
 });
 
 // Shows the form to add a new notification
-app.get("/adminManageNotifications/new", (req, res) => res.render("addNotification"));
+app.get("/adminManageNotifications/new", isLoggedIn, (req, res) => res.render("addNotification"));
 
 // Adding notification to the database
-app.post("/adminManageNotifications", (req, res) => {
+app.post("/adminManageNotifications", isLoggedIn, (req, res) => {
     const createNotification = async () => {
         try {
             const notification = {
@@ -111,14 +142,14 @@ app.post("/adminManageNotifications", (req, res) => {
 });
 
 // Delete a particular notification from database
-app.post("/adminManageNotifications/:id", async (req, res) => {
+app.post("/adminManageNotifications/:id", isLoggedIn, async (req, res) => {
     const notification = await Notification.findById(req.params.id);
     await notification.remove();
     res.redirect("/adminManageNotifications");
 });
 
 // Activity Management route for Admin
-app.get("/adminManageActivities", (req, res) => {
+app.get("/adminManageActivities", isLoggedIn, (req, res) => {
     const getActivities = async () => {
         try {
             const activities = await Image.find();
@@ -132,7 +163,7 @@ app.get("/adminManageActivities", (req, res) => {
 });
 
 // Adding activity to the database
-app.post("/adminManageActivities", upload.single('image'), (req, res, next) => {
+app.post("/adminManageActivities", isLoggedIn, upload.single('image'), (req, res, next) => {
     const createImage = async () => {
         try {
             var image = {
@@ -153,10 +184,22 @@ app.post("/adminManageActivities", upload.single('image'), (req, res, next) => {
 });
 
 // Deleting a particular activity from the database
-app.post("/adminManageActivities/:id", async (req, res) => {
+app.post("/adminManageActivities/:id", isLoggedIn, async (req, res) => {
     const activity = await Image.findById(req.params.id);
     await activity.remove();
     res.redirect("/adminManageActivities");
 });
+
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.redirect("/");
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect("/adminSignIn");
+};
 
 app.listen(port, () => console.log(`Sevrer is listening at port ${port}...`));

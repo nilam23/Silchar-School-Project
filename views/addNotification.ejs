@@ -1,6 +1,10 @@
 <%- include("partials/header") %>
 
     <h1 class="portal"><small class="text-muted"><b>ADMIN PORTAL</b></small></h1>
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg" href="/logout">LOG OUT</a>
+    </div>
+    <hr>
     <div class="signup-form">
         <form action="/adminManageNotifications" method="POST">
             <h2>Add new notification</h2>
@@ -12,4 +16,7 @@
                 <button type="submit" class="btn btn-primary btn-block btn-lg">Add Notification</button>
             </div>
         </form>
+    </div>
+    <div class="text-center">
+        <a class="btn btn-primary btn-lg" href="/adminManageNotifications">GO BACK</a>
     </div>
