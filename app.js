@@ -45,6 +45,8 @@ var storage = multer.diskStorage({
     }
 });
 
+var upload = multer({ storage: storage });
+
 const createAdmin = () => {
     Admin.register(new Admin({ username: process.env.ADMIN_USERNAME }), process.env.ADMIN_PASSWORD, (err, admin) => {
         if (err) {
@@ -57,8 +59,8 @@ const createAdmin = () => {
 
 // createAdmin();
 
-var upload = multer({ storage: storage });
 
+// ROUTES
 app.get("/", (req, res) => {
     var currentUser = req.user;
     const getNotification = async () => {
@@ -100,21 +102,21 @@ app.get("/notifications", (req, res) => {
 });
 
 //ADMIN ROUTES
-app.get("/adminSignIn", (req, res) => res.render("adminSignIn"));
+app.get("/adminSignIn", (req, res) => res.render("admin/adminSignIn"));
 
 app.post("/adminSignIn", passport.authenticate("local", {
     successRedirect: "/adminManage",
     failureRedirect: "/adminSignIn"
 }), (req, res) => { });
 
-app.get("/adminManage", isLoggedIn, (req, res) => res.render("manage"));
+app.get("/adminManage", isLoggedIn, (req, res) => res.render("admin/manage"));
 
 // Notification Management route for Admin
 app.get("/adminManageNotifications", isLoggedIn, (req, res) => {
     const getNotification = async () => {
         try {
             const notifications = await Notification.find();
-            res.render("manageNotifications", { notifications });
+            res.render("admin/manageNotifications", { notifications });
         } catch (err) {
             console.log(err);
         }
@@ -123,7 +125,7 @@ app.get("/adminManageNotifications", isLoggedIn, (req, res) => {
 });
 
 // Shows the form to add a new notification
-app.get("/adminManageNotifications/new", isLoggedIn, (req, res) => res.render("addNotification"));
+app.get("/adminManageNotifications/new", isLoggedIn, (req, res) => res.render("admin/addNotification"));
 
 // Adding notification to the database
 app.post("/adminManageNotifications", isLoggedIn, (req, res) => {
@@ -154,7 +156,7 @@ app.get("/adminManageActivities", isLoggedIn, (req, res) => {
     const getActivities = async () => {
         try {
             const activities = await Image.find();
-            res.render("manageActivities", { activities })
+            res.render("admin/manageActivities", { activities })
         } catch (err) {
             console.log(err);
             res.redirect("/");
