@@ -5,9 +5,11 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const passportLocalMongoose = require("passport-local-mongoose");
+const MongoStore = require("connect-mongo");
 
 const Notification = require("./models/notificationCollection");
 const Admin = require("./models/adminCollection");
@@ -28,7 +30,10 @@ app.use(bodyParser.json());
 
 const secret = process.env.EXPRESS_SESSION_SECRET;
 
-app.use(require("express-session")({
+app.use(session({
+    store: MongoStore.create({
+        mongoUrl: dbURL
+    }),
     secret,
     resave: false,
     saveUninitialized: false
