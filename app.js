@@ -17,7 +17,7 @@ const Image = require("./models/activityCollection");
 
 const app = express();
 
-const dbURL = process.env.MONGOURL || "mongodb://localhost/SilcharSchool";
+const dbURL = process.env.MONGO_LOCAL_URL || process.env.MONGO_URL;
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(() => console.log("Database connection is successful."))
