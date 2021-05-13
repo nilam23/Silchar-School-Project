@@ -14,9 +14,10 @@ const Admin = require("./models/adminCollection");
 const Image = require("./models/activityCollection");
 
 const app = express();
-const port = 3000;
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+const dbURL = process.env.MONGOURL || "mongodb://localhost/SilcharSchool";
+
+mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(() => console.log("Database connection is successful."))
     .catch((err) => console.log(err));
 
@@ -25,8 +26,10 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const secret = process.env.EXPRESS_SESSION_SECRET;
+
 app.use(require("express-session")({
-    secret: process.env.EXPRESS_SESSION_SECRET,
+    secret,
     resave: false,
     saveUninitialized: false
 }));
@@ -204,5 +207,7 @@ function isLoggedIn(req, res, next) {
     }
     res.redirect("/adminSignIn");
 };
+
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`Sevrer is listening at port ${port}...`));
