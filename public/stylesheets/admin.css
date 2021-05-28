@@ -74,6 +74,12 @@ body {
     margin-bottom: 40px;
 }
 
+@media (max-width: 400px){
+	.signup-form{
+		width: 100%;
+	}
+}
+
 /* ADMIN PORTAL HEADER */
 .portal{
 	text-align: center;

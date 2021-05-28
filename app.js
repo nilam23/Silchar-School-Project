@@ -215,4 +215,4 @@ function isLoggedIn(req, res, next) {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log(`Sevrer is listening at port ${port}...`));
+app.listen(port, () => console.log(`Sevrer is listening at port ${port}.`));
